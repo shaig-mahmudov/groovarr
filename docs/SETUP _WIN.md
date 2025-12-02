@@ -10,6 +10,7 @@ It is recommended to use [Visual Studio Code](https://code.visualstudio.com/down
 ---
 
 ## 📂 Project Structure
+
 ```
 groovarr/
 ├── backend/
@@ -31,54 +32,44 @@ groovarr/
 ## ⚙️ Backend Setup (ASP.NET Core + EF Core)
 
 ### 1. Prerequisites
+
 - [.NET 8 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 
-  ```bash
-  sudo apt-get update && \
-  sudo apt-get install -y dotnet-sdk-8.0
+  ```powershell
+   .\scripts\dotnet-install.ps1 -Version 8.0.416
   ```
 
 - EF Core CLI tools:
-
-  ```bash
-  cd ./backend/Groovarr.Api/
+  
+  ```powershell
+  cd .\backend\Groovarr.Api\
   dotnet tool install --global dotnet-ef --version 8.*
-  ```
-
-  Ensure the toEF Core CLI tools folder is in the PATH for the current session before continuing.
-
-  ```bash
-  export PATH="$PATH:~/.dotnet/tools"
   ```
 
 ### 2. Create Initial Schema
 
-Run from `backend/Groovarr.Api/`:
+Run from `backend\Groovarr.Api\`:
 
-```bash
-cd ./backend/Groovarr.Api/
-dotnet ef migrations add InitialCreate \
-  --context GroovarrDbContext \
-  --output-dir Migrations/Groovarr
+```powershell
+cd .\backend\Groovarr.Api\
+dotnet ef migrations add InitialCreate --context GroovarrDbContext --output-dir Migrations\Groovarr
 ```
 
 >[!NOTE]
 >To undo this migration `dotnet ef migrations remove --context GroovarrDbContext`
 
-```bash
-dotnet ef migrations add InitialCreate \
-  --context AuthDbContext \
-  --output-dir Migrations/Auth
+```powershell
+dotnet ef migrations add InitialCreate --context AuthDbContext --output-dir Migrations\Auth
 ```
 
 >[!NOTE]
 >To undo this migration `dotnet ef migrations remove --context AuthDbContext`
 
-```bash
+```powershell
 dotnet ef database update --context GroovarrDbContext
 ```
 
-```bash
+```powershell
 dotnet ef database update --context AuthDbContext
 ```
 
@@ -86,7 +77,7 @@ dotnet ef database update --context AuthDbContext
 
 Run from root of the project.
 
-```bash
+```powershell
 dotnet run
 ```
 
@@ -94,7 +85,7 @@ Visit Swagger at `http://localhost:5000/docs/index.html`.
 
 or if using curl,
 
-```bash
+```powershell
 curl http://localhost:5000/swagger/v1/swagger.json
 ```
 
@@ -102,21 +93,22 @@ curl http://localhost:5000/swagger/v1/swagger.json
 
 ## 🎨 Frontend Setup (React + Vite)
 
-Run from `frontend/web/`:
+Run from `frontend\web\`:
 
 ### 1. Prerequisites
 
-- [Node.js LTS](https://nodejs.org/) (includes npm). Use Node Version Manager (nvm) to install latest.
+- [Node.js LTS](https://nodejs.org/en/about/previous-releases) (includes npm). Use [Node Version Manager (nvm) installer](https://github.com/coreybutler/nvm-windows/releases/latest) to install latest.
 
-  ```bash
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
-  source ~/.bashrc
-  nvm install node
+>[!NOTE]
+>If using Visual Studio Code terminal, restart vscode before continuing after installing nvm.
+
+  ```powershell
+  nvm install lts
   ```
 
 - Verify:
 
-  ```bash
+  ```powershell
   node -v
   npm -v
   ```
@@ -125,14 +117,14 @@ Run from `frontend/web/`:
 
 From `frontend/web/`:
 
-```bash
-cd ./frontend/web/
+```powershell
+cd .\frontend\web\ 
 npm install
 ```
 
 ### 3. Run Dev Server
 
-```bash
+```powershell
 npm run dev -- --host 0.0.0.0
 ```
 
@@ -165,39 +157,8 @@ npm run preview -- --host 0.0.0.0
 
 ## 🔗 Quickstart Script (Optional)
 
-Execute `./scripts/dev.sh` from the project root to start the Groovar application.
+Execute `.\scripts\dev.ps1` from the project root to start the Groovar application.
 
-```bash
-#!/bin/bash
-set -e
-
-echo "🚀 Starting Groovarr backend..."
-cd backend/Groovarr.Api
-dotnet restore
-dotnet run &
-BACKEND_PID=$!
-
-echo "🎨 Starting Groovarr frontend..."
-cd ../../frontend/web
-npm install
-npm run dev &
-FRONTEND_PID=$!
-
-trap "echo '🛑 Stopping...'; kill $BACKEND_PID $FRONTEND_PID" SIGINT
-wait
-```
-
-Run:
-
-```bash
-chmod +x scripts/dev.sh
-./scripts/dev.sh
-```
-
-Backend → `http://localhost:5000`  
-Frontend → `http://localhost:5173`
-
----
 
 ## ✅ Summary
 

@@ -9,6 +9,7 @@ All endpoints are prefixed with `/api`.
 
 - **AuthDbContext** manages Plex tokens and share links.
 - Endpoints requiring authentication expect a valid Plex token in the `Authorization` header:
+  
   ```
   Authorization: Bearer <plex-token>
   ```
