@@ -140,6 +140,8 @@ npm run build
 npm run preview -- --host 0.0.0.0
 ```
 
+Visit `http://localhost:4173`.
+
 >[!TIP]
 >Using the --host 0.0.0.0 option allows viewing of the page outside of localhost.
 

@@ -111,7 +111,7 @@ Run from `frontend/web/`:
   ```bash
   curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
   source ~/.bashrc
-  nvm install node
+  nvm install
   ```
 
 - Verify:
@@ -148,6 +148,7 @@ npm run build
 npm run preview -- --host 0.0.0.0
 ```
 
+Visit `http://localhost:4173`.
 >[!TIP]
 >Using the --host 0.0.0.0 option allows viewing of the page outside of localhost.
 
