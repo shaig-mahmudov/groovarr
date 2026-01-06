@@ -11,6 +11,7 @@ jobs:
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest]
 
@@ -25,9 +26,8 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-          cache: true
-
-      - name: Restore Backend dependencies
+          
+      - name: Restore Backend
         run: dotnet restore backend/Groovarr.Api/Groovarr.Api.csproj
 
       - name: Build Backend
@@ -37,30 +37,28 @@ jobs:
         run: dotnet test backend/Groovarr.Api/Groovarr.Api.csproj --configuration Release --no-build
 
       # -------------------------------------------
-      # FRONTEND (React / Vite / Node 22)
+      # FRONTEND (React / Node 22)
       # -------------------------------------------
-      - name: Setup Node.js 22 (LTS)
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: frontend/web/package-lock.json
 
-      - name: Install Frontend dependencies
+      - name: Install Frontend Dependencies
         working-directory: ./frontend/web
-        run: npm ci
+        run: npm install
 
       - name: Build Frontend
         working-directory: ./frontend/web
         run: npm run build
 
       # -------------------------------------------
-      # ARTIFACTS 
+      # ARTIFACTS
       # -------------------------------------------
-      - name: Upload Artifacts
+      - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: build-assets-${{ matrix.os }}
+          name: assets-${{ matrix.os }}
           path: |
-            backend/Groovarr.Api/bin/Release/**
-            frontend/web/dist/**
+            backend/Groovarr.Api/bin/Release/net8.0/
+            frontend/web/dist/
