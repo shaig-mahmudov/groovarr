@@ -25,16 +25,17 @@ jobs:
       - name: Setup .NET 8
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'
-          
+          dotnet-version: '8.0.121' # Şəkildəki dəqiq versiya
+
       - name: Restore Backend
-        run: dotnet restore backend/Groovarr.Api/Groovarr.Api.csproj
+        # Skrinşotdan görünən dəqiq yol:
+        run: dotnet restore backend/Groovarr.Api/groovarr.csproj
 
       - name: Build Backend
-        run: dotnet build backend/Groovarr.Api/Groovarr.Api.csproj --configuration Release --no-restore
+        run: dotnet build backend/Groovarr.Api/groovarr.csproj --configuration Release --no-restore
 
       - name: Test Backend
-        run: dotnet test backend/Groovarr.Api/Groovarr.Api.csproj --configuration Release --no-build
+        run: dotnet test backend/Groovarr.Api/groovarr.csproj --configuration Release --no-build
 
       # -------------------------------------------
       # FRONTEND (React / Node 22)
@@ -44,7 +45,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install Frontend Dependencies
+      - name: Install Frontend
         working-directory: ./frontend/web
         run: npm install
 
@@ -53,9 +54,9 @@ jobs:
         run: npm run build
 
       # -------------------------------------------
-      # ARTIFACTS
+      # ARTIFACTS (DLL və Statik Fayllar)
       # -------------------------------------------
-      - name: Upload Build Artifacts
+      - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: assets-${{ matrix.os }}
